@@ -1,24 +1,24 @@
+import BoxHeader from "@/components/BoxHeader";
 import DashboardBox from "@/components/DashboardBox";
+import FlexBetween from "@/components/FlexBetween";
 import { useGetKpisQuery, useGetProductsQuery } from "@/state/api";
-import { useMemo } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
+import React, { useMemo } from "react";
 import {
+  Tooltip,
+  CartesianGrid,
+  LineChart,
   ResponsiveContainer,
   XAxis,
   YAxis,
-  Tooltip,
-  LineChart,
-  CartesianGrid,
+  Line,
   PieChart,
   Pie,
-  Line,
   Cell,
   ScatterChart,
   Scatter,
   ZAxis,
 } from "recharts";
-import BoxHeader from "@/components/BoxHeader";
-import FlexBetween from "@/components/FlexBetween";
 
 const pieData = [
   { name: "Group A", value: 600 },
@@ -30,6 +30,7 @@ const Row2 = () => {
   const pieColors = [palette.primary[800], palette.primary[300]];
   const { data: operationalData } = useGetKpisQuery();
   const { data: productData } = useGetProductsQuery();
+
   const operationalExpenses = useMemo(() => {
     return (
       operationalData &&
@@ -62,13 +63,11 @@ const Row2 = () => {
     <>
       <DashboardBox gridArea="d">
         <BoxHeader
-          title="Operational vs NonOperatinal expenses"
+          title="Operational vs Non-Operational Expenses"
           sideText="+4%"
         />
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
-            width={500}
-            height={400}
             data={operationalExpenses}
             margin={{
               top: 20,
@@ -85,7 +84,7 @@ const Row2 = () => {
             />
             <YAxis
               yAxisId="left"
-              orient="left"
+              orientation="left"
               tickLine={false}
               axisLine={false}
               style={{ fontSize: "10px" }}
@@ -96,8 +95,7 @@ const Row2 = () => {
               tickLine={false}
               axisLine={false}
               style={{ fontSize: "10px" }}
-            />{" "}
-            <YAxis yAxisId="right" orientation="right" />
+            />
             <Tooltip />
             <Line
               yAxisId="left"
@@ -114,8 +112,8 @@ const Row2 = () => {
           </LineChart>
         </ResponsiveContainer>
       </DashboardBox>
-      <BoxHeader title="Campaigns and Targets" sideText="+4%" />
       <DashboardBox gridArea="e">
+        <BoxHeader title="Campaigns and Targets" sideText="+4%" />
         <FlexBetween mt="0.25rem" gap="1.5rem" pr="1rem">
           <PieChart
             width={110}
@@ -189,7 +187,7 @@ const Row2 = () => {
               axisLine={false}
               tickLine={false}
               style={{ fontSize: "10px" }}
-              tickFormatter={(v) => `${v}`}
+              tickFormatter={(v) => `$${v}`}
             />
             <ZAxis type="number" range={[20]} />
             <Tooltip formatter={(v) => `$${v}`} />

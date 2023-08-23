@@ -1,25 +1,25 @@
+import BoxHeader from "@/components/BoxHeader";
 import DashboardBox from "@/components/DashboardBox";
-import { DataGrid } from "@mui/x-data-grid/DataGrid";
+import FlexBetween from "@/components/FlexBetween";
 import {
   useGetKpisQuery,
   useGetProductsQuery,
   useGetTransactionsQuery,
 } from "@/state/api";
-import BoxHeader from "@/components/BoxHeader";
-import { Box, useTheme, Typography } from "@mui/material";
-import { GridCellParams } from "@mui/x-data-grid";
-import FlexBetween from "@/components/FlexBetween";
+import { Box, Typography, useTheme } from "@mui/material";
+import { DataGrid, GridCellParams } from "@mui/x-data-grid";
+import React, { useMemo } from "react";
 import { Cell, Pie, PieChart } from "recharts";
-import { useMemo } from "react";
 
 const Row3 = () => {
   const { palette } = useTheme();
   const pieColors = [palette.primary[800], palette.primary[500]];
+
   const { data: kpiData } = useGetKpisQuery();
   const { data: productData } = useGetProductsQuery();
   const { data: transactionData } = useGetTransactionsQuery();
 
-  const PieChartData = useMemo(() => {
+  const pieChartData = useMemo(() => {
     if (kpiData) {
       const totalExpenses = kpiData[0].totalExpenses;
       return Object.entries(kpiData[0].expensesByCategory).map(
@@ -30,7 +30,7 @@ const Row3 = () => {
               value: value,
             },
             {
-              key: `${key} of Total`,
+              name: `${key} of Total`,
               value: totalExpenses - value,
             },
           ];
@@ -38,7 +38,6 @@ const Row3 = () => {
       );
     }
   }, [kpiData]);
-  console.log(PieChartData);
 
   const productColumns = [
     {
@@ -90,7 +89,7 @@ const Row3 = () => {
     <>
       <DashboardBox gridArea="g">
         <BoxHeader
-          title="list of Products"
+          title="List of Products"
           sideText={`${productData?.length} products`}
         />
         <Box
@@ -115,6 +114,8 @@ const Row3 = () => {
         >
           <DataGrid
             columnHeaderHeight={25}
+            rowHeight={35}
+            hideFooter={true}
             rows={productData || []}
             columns={productColumns}
           />
@@ -123,7 +124,7 @@ const Row3 = () => {
       <DashboardBox gridArea="h">
         <BoxHeader
           title="Recent Orders"
-          sideText={`${transactionData?.length} latest transcation`}
+          sideText={`${transactionData?.length} latest transactions`}
         />
         <Box
           mt="1rem"
@@ -147,6 +148,8 @@ const Row3 = () => {
         >
           <DataGrid
             columnHeaderHeight={25}
+            rowHeight={35}
+            hideFooter={true}
             rows={transactionData || []}
             columns={transactionColumns}
           />
@@ -155,14 +158,14 @@ const Row3 = () => {
       <DashboardBox gridArea="i">
         <BoxHeader title="Expense Breakdown By Category" sideText="+4%" />
         <FlexBetween mt="0.5rem" gap="0.5rem" p="0 1rem" textAlign="center">
-          {PieChartData?.map((data, i) => (
+          {pieChartData?.map((data, i) => (
             <Box key={`${data[0].name}-${i}`}>
-              <PieChart width={60} height={40}>
+              <PieChart width={110} height={100}>
                 <Pie
                   stroke="none"
                   data={data}
-                  innerRadius={10}
-                  outerRadius={15}
+                  innerRadius={18}
+                  outerRadius={35}
                   paddingAngle={2}
                   dataKey="value"
                 >
@@ -179,7 +182,7 @@ const Row3 = () => {
       <DashboardBox gridArea="j">
         <BoxHeader
           title="Overall Summary and Explanation Data"
-          sideText="+4%"
+          sideText="+15%"
         />
         <Box
           height="15px"
@@ -190,12 +193,15 @@ const Row3 = () => {
           <Box
             height="15px"
             bgcolor={palette.primary[600]}
-            width="40%"
             borderRadius="1rem"
+            width="40%"
           ></Box>
         </Box>
         <Typography margin="0 1rem" variant="h6">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit
+          Orci aliquam enim vel diam. Venenatis euismod id donec mus lorem etiam
+          ullamcorper odio sed. Ipsum non sed gravida etiam urna egestas
+          molestie volutpat et. Malesuada quis pretium aliquet lacinia ornare
+          sed. In volutpat nullam at est id cum pulvinar nunc.
         </Typography>
       </DashboardBox>
     </>
